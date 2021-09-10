@@ -5,6 +5,7 @@ import { Table, Button, Form } from "react-bootstrap";
 
 import { filterField_enum } from "./../../shared/enum";
 import request from "./../../shared/request";
+import config from "./../../config.json";
 
 function Grid(props) {
   let columnsArr = props.columns;
@@ -25,8 +26,8 @@ function Grid(props) {
   for (let col of columnsArr) {
     tableHeader.push(
       col.Sortable ? (
-        <th>
-          <Button key={col.id} variant="link" className="py-0 text-dark">
+        <th key={col.id}>
+          <Button variant="link" className="py-0 text-dark">
             {col.text}
           </Button>
         </th>
@@ -37,7 +38,9 @@ function Grid(props) {
       )
     );
     tableFilter.push(
-      <td className="p-0">{col.filterable ? buildColumnFilter(col) : null} </td>
+      <td key={`${col.id}-filter`} className="p-0">
+        {col.filterable ? buildColumnFilter(col) : null}{" "}
+      </td>
     );
     if (col.filterable) {
       filterCount++;
@@ -52,14 +55,14 @@ function Grid(props) {
       </tr>
     );
   } else if (gridState.data) {
-    debugger;
+    let startIndex = (gridState.currentPage - 1) * config.rowPerPage + 1;
     tableContent = gridState.data.map((row, index) => (
       <tr key={row.id}>
         {columnsArr.map((it) => {
           let className = it.id == -1 ? "text-center" : "";
           return (
             <td className={className} key={row.id + it.id}>
-              {it.id == -1 ? index + 1 : row[it.selector]}
+              {it.id == -1 ? index + startIndex : row[it.selector]}
             </td>
           );
         })}
@@ -69,18 +72,20 @@ function Grid(props) {
 
   //selector: 'region',
 
-  function readGridDate() {
-    request.get(dataUrl).then((result) => {
+  function readGridDate(pageNumber) {
+    let api = `${dataUrl}?pageNumber=${pageNumber}`;
+    request.get(api).then((result) => {
       setGridState({
         isLoading: false,
         data: result.data,
         numberOfPages: result.numberOfPages,
         recordsCount: result.count,
+        currentPage: pageNumber,
       });
     });
   }
-  useEffect(readGridDate, []);
-
+  useEffect(() => readGridDate(1), []);
+  debugger;
   return (
     <>
       <div

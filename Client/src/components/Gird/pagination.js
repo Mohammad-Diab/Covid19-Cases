@@ -2,21 +2,44 @@ import { Pagination } from "react-bootstrap";
 import { useState } from "react";
 
 function GridPagination(props) {
-  return (
-    <Pagination style={{ float: "right" }}>
-      <Pagination.Item>{1}</Pagination.Item>
-      <Pagination.Ellipsis />
+  let currentPage = props.currentPage;
+  let numberOfPages = props.numberOfPages;
+  let recordsCount = props.recordsCount;
 
-      <Pagination.Item>{10}</Pagination.Item>
-      <Pagination.Item>{11}</Pagination.Item>
-      <Pagination.Item active>{12}</Pagination.Item>
-      <Pagination.Item>{13}</Pagination.Item>
-      <Pagination.Item>{14}</Pagination.Item>
+  let goToPage =props.goToPage ;
 
-      <Pagination.Ellipsis />
-      <Pagination.Item>{20}</Pagination.Item>
-    </Pagination>
-  );
+  if (numberOfPages < 2) {
+    return <></>;
+  }
+  debugger;
+
+  let pageNumbersToShow = [
+    1,
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    numberOfPages,
+  ];
+
+  pageNumbersToShow = pageNumbersToShow.filter(function (item, pos) {
+    return pageNumbersToShow.indexOf(item) == pos && item > 0 && item <= numberOfPages;
+  });
+
+  let pagesItem = [];
+  let lastPage = 0;
+  for (let page of pageNumbersToShow) {
+    if (lastPage + 1 < page) {
+      pagesItem.push(<Pagination.Ellipsis disabled key={`Ellipsis${lastPage}-${page}`} />);
+    }
+    pagesItem.push(
+      <Pagination.Item key={`page${page}`} active={currentPage == page} onClick={()=>goToPage(page)}>
+        {page}
+      </Pagination.Item>
+    );
+    lastPage = page;
+  }
+
+  return <Pagination style={{ float: "right" }}>{pagesItem}</Pagination>;
 }
 
 export default GridPagination;
