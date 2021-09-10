@@ -1,0 +1,9 @@
+{
+    "database": {
+        "server": "127.0.0.1",
+        "username": "COVID19",
+        "password": "COVID19",
+        "databaseName": "covid19"
+    },
+    "rowPerPage": 20
+}
