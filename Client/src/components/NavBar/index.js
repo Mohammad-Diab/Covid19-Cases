@@ -6,7 +6,7 @@ import logo from './../../Assets/img/covid-19-logo.png';
 
 function Header(){
     return (
-        <Navbar bg="light" variant="light">
+        <Navbar bg="light" variant="light" className="mb-4">
             <Container>
                 <Navbar.Brand href="#home">
                     <img alt="" src={logo} width="30" height="30" className="d-inline-block align-top"/>
