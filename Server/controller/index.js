@@ -10,4 +10,17 @@ module.exports = async function(app) {
             res.send(result)
         });
     });
+
+    app.get('/getCountryDetails', function(req, res) {
+        let countryId = req.query.countryId || '';
+        if (!countryId) {
+            // invalid request;
+            return;
+        }
+        let pageNumber = req.query.pageNumber || 1;
+
+        logic.getCountryDetails(countryId, pageNumber).then((result) => {
+            res.send(result)
+        });
+    });
 }

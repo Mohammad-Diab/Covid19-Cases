@@ -21,6 +21,22 @@ module.exports = data = {
         let result = await excuteQuery(query);
         return result;
     },
+
+    getCountryDetails: async function(countryId, pageNumber) {
+        let limit = `LIMIT ${config.rowPerPage * (pageNumber - 1)}, ${config.rowPerPage}`;
+        let query = `select date, 
+		max(CASE WHEN Type = 1 THEN Count ELSE 0 END) AS confirmed,
+        max(CASE WHEN Type = 2 THEN Count ELSE 0 END) AS recovered,
+        max(CASE WHEN Type = 3 THEN Count ELSE 0 END) AS death
+        from covidcases 
+        where CountryId = '${countryId}'
+        GROUP by date
+        order by date DESC
+        ${limit}`;
+        let result = await excuteQuery(query);
+        return result;
+    },
+
 }
 
 async function excuteQuery(query) {
