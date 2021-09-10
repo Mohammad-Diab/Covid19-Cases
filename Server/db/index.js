@@ -50,6 +50,12 @@ module.exports = data = {
         return result;
     },
 
+    getAllRegions: async function() {
+        let query = 'SELECT DISTINCT Region from countries ORDER by Region';
+        let result = await excuteQuery(query);
+        return result;
+    },
+
 }
 
 async function excuteQuery(query) {

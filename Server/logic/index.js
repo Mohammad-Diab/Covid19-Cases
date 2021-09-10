@@ -13,5 +13,9 @@ module.exports = logic = {
 
     getCountryCasesCount: async function(countryId) {
         return await db.getCountryCasesCount(countryId)
+    },
+
+    getAllRegions: async function() {
+        return await db.getAllRegions()
     }
 }

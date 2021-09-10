@@ -35,4 +35,10 @@ module.exports = async function(app) {
             res.send(result)
         });
     });
+
+    app.get('/getAllRegions', function(req, res) {
+        logic.getAllRegions().then((result) => {
+            res.send(result)
+        });
+    });
 }
