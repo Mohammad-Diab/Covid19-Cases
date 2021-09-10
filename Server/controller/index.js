@@ -23,4 +23,16 @@ module.exports = async function(app) {
             res.send(result)
         });
     });
+
+    app.get('/getCountryCasesCount', function(req, res) {
+        let countryId = req.query.countryId || '';
+        if (!countryId) {
+            // invalid request;
+            return;
+        }
+
+        logic.getCountryCasesCount(countryId).then((result) => {
+            res.send(result)
+        });
+    });
 }

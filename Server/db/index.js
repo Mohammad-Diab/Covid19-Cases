@@ -37,6 +37,19 @@ module.exports = data = {
         return result;
     },
 
+    getCountryCasesCount: async function(countryId) {
+        let query = `select country, region,
+        sum(CASE WHEN Type = 1 THEN Count ELSE 0 END) AS confirmed,
+        sum(CASE WHEN Type = 2 THEN Count ELSE 0 END) AS recovered,
+        sum(CASE WHEN Type = 3 THEN Count ELSE 0 END) AS death
+        from covidcases
+        inner join countries c on CountryId = c.id
+        where CountryId = '${countryId}'
+        GROUP by CountryId;`;
+        let result = await excuteQuery(query);
+        return result;
+    },
+
 }
 
 async function excuteQuery(query) {

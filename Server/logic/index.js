@@ -9,5 +9,9 @@ module.exports = logic = {
     getCountryDetails: async function(countryId, pageNumber) {
         pageNumber = pageNumber < 0 ? 1 : pageNumber;
         return await db.getCountryDetails(countryId, pageNumber)
+    },
+
+    getCountryCasesCount: async function(countryId) {
+        return await db.getCountryCasesCount(countryId)
     }
 }
