@@ -1,4 +1,4 @@
-const config = require('../config.json')
+const config = require('../config.json');
 const mysql = require('mysql');
 const utit = require('util');
 
@@ -9,9 +9,9 @@ module.exports = data = {
         let sortByQuery = getSortByQuery(sortBy);
         let limit = `LIMIT ${config.rowPerPage * (pageNumber - 1)}, ${config.rowPerPage}`;
         let query = `select c.Id, c.Country, c.Region,
-        SUM(CASE WHEN v.Type = 1 THEN v.Count ELSE 0 END) AS confirmed,
-        SUM(CASE WHEN v.Type = 2 THEN v.Count ELSE 0 END) AS recovered,
-        SUM(CASE WHEN v.Type = 3 THEN v.Count ELSE 0 END) AS death
+        SUM(CASE WHEN v.Type = 1 THEN v.Count ELSE 0 END) AS Confirmed,
+        SUM(CASE WHEN v.Type = 2 THEN v.Count ELSE 0 END) AS Recovered,
+        SUM(CASE WHEN v.Type = 3 THEN v.Count ELSE 0 END) AS Death
         FROM countries c
         inner join covidcases v on v.CountryId = c.Id
         ${filterQuery}
@@ -22,12 +22,20 @@ module.exports = data = {
         return result;
     },
 
+    getCountriesListCount: async function(filter) {
+        let filterQuery = filter ? ` where c.Region = '${filter}' ` : '';
+        let query = `select count(c.Id) AS Count FROM countries c
+        ${filterQuery}`;
+        let result = await excuteQuery(query);
+        return result[0].Count;
+    },
+
     getCountryDetails: async function(countryId, pageNumber) {
         let limit = `LIMIT ${config.rowPerPage * (pageNumber - 1)}, ${config.rowPerPage}`;
         let query = `select date, 
-		max(CASE WHEN Type = 1 THEN Count ELSE 0 END) AS confirmed,
-        max(CASE WHEN Type = 2 THEN Count ELSE 0 END) AS recovered,
-        max(CASE WHEN Type = 3 THEN Count ELSE 0 END) AS death
+		max(CASE WHEN Type = 1 THEN Count ELSE 0 END) AS Confirmed,
+        max(CASE WHEN Type = 2 THEN Count ELSE 0 END) AS Recovered,
+        max(CASE WHEN Type = 3 THEN Count ELSE 0 END) AS Death
         from covidcases 
         where CountryId = '${countryId}'
         GROUP by date
@@ -39,9 +47,9 @@ module.exports = data = {
 
     getCountryCasesCount: async function(countryId) {
         let query = `select country, region,
-        sum(CASE WHEN Type = 1 THEN Count ELSE 0 END) AS confirmed,
-        sum(CASE WHEN Type = 2 THEN Count ELSE 0 END) AS recovered,
-        sum(CASE WHEN Type = 3 THEN Count ELSE 0 END) AS death
+        sum(CASE WHEN Type = 1 THEN Count ELSE 0 END) AS Confirmed,
+        sum(CASE WHEN Type = 2 THEN Count ELSE 0 END) AS Recovered,
+        sum(CASE WHEN Type = 3 THEN Count ELSE 0 END) AS Death
         from covidcases
         inner join countries c on CountryId = c.id
         where CountryId = '${countryId}'
