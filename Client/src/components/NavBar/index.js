@@ -13,7 +13,7 @@ function Header(){
                     {' '} COVID-19
                 </Navbar.Brand>
                 <Nav className="me-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
+                    <Nav.Link active href="#home">Home</Nav.Link>
                     <Nav.Link href="#link">Favorite</Nav.Link>
                 </Nav>
             </Container>
