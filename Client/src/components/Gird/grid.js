@@ -29,6 +29,21 @@ function Grid(props) {
     sortBy: 0,
   });
 
+  useEffect(() => {
+    let data = props.data;
+    if (data) {
+      setGridState({
+        isLoading: false,
+        data: props.data.data,
+        numberOfPages: props.data.numberOfPages,
+        recordsCount: props.data.count,
+        currentPage: gridState.currentPage,
+        filter: gridState.filter,
+        sortBy: gridState.sortBy,
+      });
+    }
+  }, [props.data]);
+
   let tableHeader = [];
   let tableFilter = [];
   let tableContent = [];
@@ -90,7 +105,7 @@ function Grid(props) {
       }
     }
   }
-
+  
   if (gridState.isLoading) {
     tableContent.push(
       <tr key={"loading"}>
