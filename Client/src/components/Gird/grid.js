@@ -131,14 +131,14 @@ function Grid(props) {
     <>
       <div
         className="mb-2"
-        style={{ height: "calc(100% - 3em)", overflowY: "scroll" }}
+        style={{ height: "calc(100% - 3em)", overflow: "hidden auto" }}
       >
         <Table striped bordered hover className="mb-0">
           <thead>
             <tr className="text-center bg-light">{tableHeader}</tr>
+            {filterCount ? <tr className="text-center bg-light">{tableFilter}</tr> : <></>}
           </thead>
           <tbody>
-            {filterCount ? <tr>{tableFilter}</tr> : <></>}
             {tableContent}
           </tbody>
         </Table>
