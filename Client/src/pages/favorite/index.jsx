@@ -20,7 +20,7 @@ function Favorite(props) {
       id: 1,
       selector: "name",
       text: "Country",
-      Sortable: true,
+      Sortable: false,
       filterable: false,
       width: "80%",
     },
