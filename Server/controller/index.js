@@ -38,7 +38,7 @@ module.exports = async function(app, logger) {
 
         logger.log({
             level: 'info',
-            message: `${dateTime()}; getCountryDetails is requested with these paramenter pageNumber='${pageNumber}'`
+            message: `${dateTime()}; getCountryDetails is requested with these paramenters countryId=${countryId} pageNumber='${pageNumber}'`
         });
 
         logic.getCountryDetails(countryId, pageNumber).then((result) => {
@@ -67,7 +67,7 @@ module.exports = async function(app, logger) {
         }
         logger.log({
             level: 'info',
-            message: `${dateTime()}; getCountryCasesCount is requested with these paramenter pageNumber='${pageNumber}'`
+            message: `${dateTime()}; getCountryCasesCount is requested with these paramenter countryId='${countryId}'`
         });
         logic.getCountryCasesCount(countryId).then((result) => {
             res.send(result)
