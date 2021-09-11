@@ -8,6 +8,9 @@ import { filterField_enum } from "./../../shared/enum";
 import request from "./../../shared/request";
 import config from "./../../config.json";
 
+import arrowUp from "./../../Assets/img/arrow-up.svg";
+import arrowDown from "./../../Assets/img/arrow-down.svg";
+
 function Grid(props) {
   let columnsArr = props.columns;
   let dataUrl = props.dataUrl;
@@ -19,6 +22,7 @@ function Grid(props) {
     numberOfPages: 0,
     recordsCount: 0,
     filter: "",
+    sortBy: 0,
   });
 
   let tableHeader = [];
@@ -31,8 +35,26 @@ function Grid(props) {
       tableHeader.push(
         col.Sortable ? (
           <th style={{ width: col.width }} key={col.id}>
-            <Button variant="link" className="py-0 text-dark">
+            <Button
+              variant="link"
+              className="py-0 text-dark"
+              onClick={() => {
+                debugger;
+                readGridDate(
+                  1,
+                  gridState.filter,
+                  gridState.sortBy == col.id ? col.id + 10 : col.id
+                );
+              }}
+            >
               {col.text}
+              {gridState.sortBy == col.id ? (
+                <img alt="arrow up" src={arrowUp} className="ml-2" />
+              ) : gridState.sortBy == col.id + 10 ? (
+                <img alt="arrow down" src={arrowDown} className="ml-2" />
+              ) : (
+                ""
+              )}
             </Button>
           </th>
         ) : (
@@ -50,7 +72,7 @@ function Grid(props) {
         let filterElement = buildColumnFilter(col, (filter) => {
           debugger;
           filter = filter ? encodeURIComponent(filter) : "";
-          readGridDate(1, filter);
+          readGridDate(1, filter, gridState.sortBy);
         });
         tableFilter.push(
           <td key={`${col.id}-filter`} className="p-0">
@@ -88,9 +110,9 @@ function Grid(props) {
 
   //selector: 'region',
 
-  function readGridDate(pageNumber, filter) {
+  function readGridDate(pageNumber, filter, sortBy) {
     filter = filter ? filter : "";
-    let api = `${dataUrl}?pageNumber=${pageNumber}&filter=${filter}`;
+    let api = `${dataUrl}?pageNumber=${pageNumber}&filter=${filter}&sortBy=${sortBy}`;
     request.get(api).then((result) => {
       setGridState({
         isLoading: false,
@@ -99,11 +121,12 @@ function Grid(props) {
         recordsCount: result.count,
         currentPage: pageNumber,
         filter: filter,
+        sortBy: sortBy,
       });
     });
   }
 
-  useEffect(() => readGridDate(1), []);
+  useEffect(() => readGridDate(1, "", 0), []);
   return (
     <>
       <div
@@ -121,7 +144,9 @@ function Grid(props) {
         </Table>
       </div>
       <GridPagination
-        goToPage={(page) => readGridDate(page, gridState.filter)}
+        goToPage={(page) =>
+          readGridDate(page, gridState.filter, gridState.sortBy)
+        }
         currentPage={gridState.currentPage}
         numberOfPages={gridState.numberOfPages}
         recordsCount={gridState.recordsCount}

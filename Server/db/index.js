@@ -93,18 +93,20 @@ async function excuteQuery(query) {
 
 function getSortByQuery(sortBy) {
     let sortQuery = ' order by ';
-    switch (sortBy) {
+    sortBy = Number(sortBy);
+    let sortByEnum = sortBy > 10 ? sortBy - 10 : sortBy + 0;
+    switch (sortByEnum) {
         case sortBy_enum.region:
             sortQuery += 'c.Region';
             break;
         case sortBy_enum.confirmedCases:
-            sortQuery += 'confirmed';
+            sortQuery += 'Confirmed';
             break;
         case sortBy_enum.deathCases:
-            sortQuery += 'death';
+            sortQuery += 'Death';
             break;
         case sortBy_enum.recoveredCases:
-            sortQuery += 'recovered';
+            sortQuery += 'Recovered';
             break;
         default:
             sortQuery += 'c.Country'
@@ -112,7 +114,7 @@ function getSortByQuery(sortBy) {
     }
 
     if (sortBy > 10) {
-        sortQuery = ' Desc'
+        sortQuery += ' Desc'
     }
 
     sortQuery += ' '
