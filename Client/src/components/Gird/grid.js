@@ -19,7 +19,7 @@ function Grid(props) {
   let gridHeight = props.gridHeight || "calc(100% - 3em)";
 
   const [gridState, setGridState] = useState({
-    data: data.data,
+    data: data ? data.data : null,
     isLoading: !data,
     currentPage: 1,
     numberOfPages: data ? data.numberOfPages : 0,
