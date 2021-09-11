@@ -3,61 +3,77 @@ const config = require("../config.json");
 
 module.exports = logic = {
     getCountriesList: async function(pageNumber, filter, sortBy) {
-        pageNumber = pageNumber < 0 ? 1 : pageNumber;
-        let result = {};
-        let resultCount = await db.getCountriesListCount(filter);
-        result.count = resultCount;
-        result.numberOfPages = Math.ceil(resultCount / config.rowPerPage);
-        if (result.count) {
-            let dbResult = await db.getCountriesList(pageNumber, filter, sortBy);
-            result.data = dbResult.map((it) => {
-                return {
-                    id: it.Id,
-                    country: it.Country,
-                    region: it.Region,
-                    confirmedCases: it.Confirmed,
-                    recoveredCases: it.Recovered,
-                    deathCases: it.Death,
-                };
-            });
-        } else {
-            result.data = [];
+        try {
+            pageNumber = pageNumber < 0 ? 1 : pageNumber;
+            let result = {};
+            let resultCount = await db.getCountriesListCount(filter);
+            result.count = resultCount;
+            result.numberOfPages = Math.ceil(resultCount / config.rowPerPage);
+            if (result.count) {
+                let dbResult = await db.getCountriesList(pageNumber, filter, sortBy);
+                result.data = dbResult.map((it) => {
+                    return {
+                        id: it.Id,
+                        country: it.Country,
+                        region: it.Region,
+                        confirmedCases: it.Confirmed,
+                        recoveredCases: it.Recovered,
+                        deathCases: it.Death,
+                    };
+                });
+            } else {
+                result.data = [];
+            }
+            return result
+        } catch (ex) {
+            throw ex;
         }
-        return result
     },
 
     getCountryDetails: async function(countryId, pageNumber) {
-        pageNumber = pageNumber < 0 ? 1 : pageNumber;
-        let result = {};
-        let resultCount = await db.getCountryDetailsCount(countryId);
+        try {
+            pageNumber = pageNumber < 0 ? 1 : pageNumber;
+            let result = {};
+            let resultCount = await db.getCountryDetailsCount(countryId);
 
-        result.count = resultCount;
-        result.numberOfPages = Math.ceil(resultCount / config.rowPerPage);
+            result.count = resultCount;
+            result.numberOfPages = Math.ceil(resultCount / config.rowPerPage);
 
-        if (result.count) {
-            let dbResult = await db.getCountryDetails(countryId, pageNumber);
-            result.data = dbResult.map((it, idx) => {
-                return {
-                    id: idx,
-                    date: stringToDate(it.Date),
-                    confirmedCases: it.Confirmed,
-                    recoveredCases: it.Recovered,
-                    deathCases: it.Death,
-                };
-            });
-        } else {
-            result.data = [];
+            if (result.count) {
+                let dbResult = await db.getCountryDetails(countryId, pageNumber);
+                result.data = dbResult.map((it, idx) => {
+                    return {
+                        id: idx,
+                        date: stringToDate(it.Date),
+                        confirmedCases: it.Confirmed,
+                        recoveredCases: it.Recovered,
+                        deathCases: it.Death,
+                    };
+                });
+            } else {
+                result.data = [];
+            }
+            return result;
+        } catch (ex) {
+            throw ex;
         }
-        return result;
-
     },
 
     getCountryCasesCount: async function(countryId) {
-        return await db.getCountryCasesCount(countryId);
+        try {
+            return await db.getCountryCasesCount(countryId);
+        } catch (ex) {
+            throw ex;
+        }
     },
 
     getAllRegions: async function() {
-        return await db.getAllRegions();
+        try {
+            return await db.getAllRegions();
+        } catch (ex) {
+            throw ex
+        }
+
     },
 };
 

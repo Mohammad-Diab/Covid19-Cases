@@ -146,15 +146,17 @@ function Grid(props) {
     }
     let api = `${dataUrl}${apiSaparator}pageNumber=${pageNumber}&filter=${filter}&sortBy=${sortBy}`;
     request.get(api).then((result) => {
-      setGridState({
-        isLoading: false,
-        data: result.data,
-        numberOfPages: result.numberOfPages,
-        recordsCount: result.count,
-        currentPage: pageNumber,
-        filter: filter,
-        sortBy: sortBy,
-      });
+      if (result) {
+        setGridState({
+          isLoading: false,
+          data: result.data,
+          numberOfPages: result.numberOfPages,
+          recordsCount: result.count,
+          currentPage: pageNumber,
+          filter: filter,
+          sortBy: sortBy,
+        });
+      }
     });
   }
 

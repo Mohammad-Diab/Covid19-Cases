@@ -23,14 +23,16 @@ function CountryInfo(props) {
     request
       .get(`getCountryCasesCount?countryId=${countryId}`)
       .then((result) => {
-        setCountryDetails({
-          name: result.name,
-          region: result.region,
-          confirmedCases: result.confirmedCases,
-          recoveredCases: result.recoveredCases,
-          deathCases: result.deathCases,
-          isLoading: false,
-        });
+        if (result) {
+          setCountryDetails({
+            name: result.name,
+            region: result.region,
+            confirmedCases: result.confirmedCases,
+            recoveredCases: result.recoveredCases,
+            deathCases: result.deathCases,
+            isLoading: false,
+          });
+        }
       });
   }
 

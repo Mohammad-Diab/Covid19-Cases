@@ -8,10 +8,16 @@ module.exports = async function(app) {
         let sortBy = req.query.sortBy || sortBy_enum.country;
         logic.getCountriesList(pageNumber, filter, sortBy).then((result) => {
             res.send(result)
+        }).catch((ex) => {
+            res.send({
+                code: 2000,
+                message: ex.message
+            });
         });
     });
 
     app.get('/getCountryDetails', function(req, res) {
+
         let countryId = req.query.countryId || '';
         if (!countryId) {
             // invalid request;
@@ -21,10 +27,16 @@ module.exports = async function(app) {
 
         logic.getCountryDetails(countryId, pageNumber).then((result) => {
             res.send(result)
+        }).catch((ex) => {
+            res.send({
+                code: 2000,
+                message: ex.message
+            });
         });
     });
 
     app.get('/getCountryCasesCount', function(req, res) {
+
         let countryId = req.query.countryId || '';
         if (!countryId) {
             // invalid request;
@@ -33,12 +45,22 @@ module.exports = async function(app) {
 
         logic.getCountryCasesCount(countryId).then((result) => {
             res.send(result)
+        }).catch((ex) => {
+            res.send({
+                code: 2000,
+                message: ex.message
+            });
         });
     });
 
     app.get('/getAllRegions', function(req, res) {
         logic.getAllRegions().then((result) => {
             res.send(result)
+        }).catch((ex) => {
+            res.send({
+                code: 2000,
+                message: ex.message
+            });
         });
     });
 }

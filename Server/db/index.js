@@ -5,34 +5,43 @@ const utit = require('util');
 const sortBy_enum = require('../enum/sortBy')
 module.exports = data = {
     getCountriesList: async function(pageNumber, filter, sortBy) {
-        let filterQuery = filter ? ` where c.Region = '${filter}' ` : '';
-        let sortByQuery = getSortByQuery(sortBy);
-        let limit = `LIMIT ${config.rowPerPage * (pageNumber - 1)}, ${config.rowPerPage}`;
-        let query = `select c.Id, c.Country, c.Region,
-        SUM(CASE WHEN v.Type = 1 THEN v.Count ELSE 0 END) AS Confirmed,
-        SUM(CASE WHEN v.Type = 2 THEN v.Count ELSE 0 END) AS Recovered,
-        SUM(CASE WHEN v.Type = 3 THEN v.Count ELSE 0 END) AS Death
-        FROM countries c
-        inner join covidcases v on v.CountryId = c.Id
-        ${filterQuery}
-        GROUP by v.CountryId
-        ${sortByQuery}
-        ${limit}`;
-        let result = await excuteQuery(query);
-        return result;
+        try {
+            let filterQuery = filter ? ` where c.Region = '${filter}' ` : '';
+            let sortByQuery = getSortByQuery(sortBy);
+            let limit = `LIMIT ${config.rowPerPage * (pageNumber - 1)}, ${config.rowPerPage}`;
+            let query = `select c.Id, c.Country, c.Region,
+            SUM(CASE WHEN v.Type = 1 THEN v.Count ELSE 0 END) AS Confirmed,
+            SUM(CASE WHEN v.Type = 2 THEN v.Count ELSE 0 END) AS Recovered,
+            SUM(CASE WHEN v.Type = 3 THEN v.Count ELSE 0 END) AS Death
+            FROM countries c
+            inner join covidcases v on v.CountryId = c.Id
+            ${filterQuery}
+            GROUP by v.CountryId
+            ${sortByQuery}
+            ${limit}`;
+            let result = await excuteQuery(query);
+            return result;
+        } catch (ex) {
+            throw ex;
+        }
     },
 
     getCountriesListCount: async function(filter) {
-        let filterQuery = filter ? ` where c.Region = '${filter}' ` : '';
-        let query = `select count(c.Id) AS Count FROM countries c
+        try {
+            let filterQuery = filter ? ` where c.Region = '${filter}' ` : '';
+            let query = `select count(c.Id) AS Count FROM countries c
         ${filterQuery}`;
-        let result = await excuteQuery(query);
-        return result[0].Count;
+            let result = await excuteQuery(query);
+            return result[0].Count;
+        } catch (ex) {
+            throw ex;
+        }
     },
 
     getCountryDetails: async function(countryId, pageNumber) {
-        let limit = `LIMIT ${config.rowPerPage * (pageNumber - 1)}, ${config.rowPerPage}`;
-        let query = `select Date, 
+        try {
+            let limit = `LIMIT ${config.rowPerPage * (pageNumber - 1)}, ${config.rowPerPage}`;
+            let query = `select Date, 
 		max(CASE WHEN Type = 1 THEN Count ELSE 0 END) AS Confirmed,
         max(CASE WHEN Type = 2 THEN Count ELSE 0 END) AS Recovered,
         max(CASE WHEN Type = 3 THEN Count ELSE 0 END) AS Death
@@ -41,19 +50,27 @@ module.exports = data = {
         GROUP by date
         order by date DESC
         ${limit}`;
-        let result = await excuteQuery(query);
-        return result;
+            let result = await excuteQuery(query);
+            return result;
+        } catch (ex) {
+            throw ex;
+        }
     },
 
     getCountryDetailsCount: async function(countryId) {
-        let query = `SELECT count(DISTINCT date) Count FROM 
+        try {
+            let query = `SELECT count(DISTINCT date) Count FROM 
         covidcases WHERE countryId = '${countryId}'`;
-        let result = await excuteQuery(query);
-        return result[0].Count;
+            let result = await excuteQuery(query);
+            return result[0].Count;
+        } catch (ex) {
+            throw ex;
+        }
     },
 
     getCountryCasesCount: async function(countryId) {
-        let query = `select country, region,
+        try {
+            let query = `select country, region,
         sum(CASE WHEN Type = 1 THEN Count ELSE 0 END) AS Confirmed,
         sum(CASE WHEN Type = 2 THEN Count ELSE 0 END) AS Recovered,
         sum(CASE WHEN Type = 3 THEN Count ELSE 0 END) AS Death
@@ -61,27 +78,33 @@ module.exports = data = {
         inner join countries c on CountryId = c.id
         where CountryId = '${countryId}'
         GROUP by CountryId;`;
-        let dbResult = await excuteQuery(query);
-        if (!dbResult.length) {
-            return {};
+            let dbResult = await excuteQuery(query);
+            if (!dbResult.length) {
+                return {};
+            }
+            let result = {
+                name: dbResult[0].country,
+                region: dbResult[0].region,
+                confirmedCases: dbResult[0].Confirmed,
+                recoveredCases: dbResult[0].Recovered,
+                deathCases: dbResult[0].Death,
+            }
+            return result;
+        } catch (ex) {
+            throw ex;
         }
-        let result = {
-            name: dbResult[0].country,
-            region: dbResult[0].region,
-            confirmedCases: dbResult[0].Confirmed,
-            recoveredCases: dbResult[0].Recovered,
-            deathCases: dbResult[0].Death,
-        }
-        return result;
     },
 
     getAllRegions: async function() {
-        let query = 'SELECT DISTINCT Region from countries ORDER by Region';
-        let result = await excuteQuery(query);
-        result = result.map((it) => it.Region);
-        return result;
+        try {
+            let query = 'SELECT DISTINCT Region from countries ORDER by Region';
+            let result = await excuteQuery(query);
+            result = result.map((it) => it.Region);
+            return result;
+        } catch (ex) {
+            throw ex;
+        }
     },
-
 }
 
 async function excuteQuery(query) {
@@ -100,6 +123,8 @@ async function excuteQuery(query) {
     try {
         await conConnect();
         result = await conExecute(query)
+    } catch (ex) {
+        throw ex;
     } finally {
         await conEnd();
     }

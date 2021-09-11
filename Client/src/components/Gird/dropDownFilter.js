@@ -13,11 +13,12 @@ function DropDownFilter(props) {
 
   useEffect(() => {
     request.get(dateUrl).then((result) => {
-      debugger;
-      setFilterState({
-        isLoading: false,
-        data: result,
-      });
+      if (result) {
+        setFilterState({
+          isLoading: false,
+          data: result,
+        });
+      }
     });
   }, []);
 
