@@ -67,13 +67,13 @@ function CountryInfo(props) {
   const favButton = (
     <Button
       size="sm"
-      style={{marginLeft: ".5rem"}}
+      style={{ marginLeft: ".5rem" }}
       variant={isInFav ? "danger" : "success"}
       onClick={() => {
         if (isInFav) {
-            favorite.removefromFavorite(countryId);
+          favorite.removefromFavorite(countryId);
         } else {
-            favorite.addtoFavorite(countryId);
+          favorite.addtoFavorite(countryId, countryDetails.name);
         }
         setIsInFav(!isInFav);
       }}
