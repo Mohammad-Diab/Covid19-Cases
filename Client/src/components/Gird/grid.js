@@ -14,19 +14,20 @@ import arrowDown from "./../../Assets/img/arrow-down.svg";
 function Grid(props) {
   let columnsArr = props.columns;
   let dataUrl = props.dataUrl;
+  let data = props.data;
   let tableClasse = props.tableClasse || "";
   let gridHeight = props.gridHeight || "calc(100% - 3em)";
 
   const [gridState, setGridState] = useState({
-    data: null,
-    isLoading: true,
+    data: data.data,
+    isLoading: !data,
     currentPage: 1,
-    numberOfPages: 0,
-    recordsCount: 0,
+    numberOfPages: data ? data.numberOfPages : 0,
+    recordsCount: data ? data.count : 0,
     filter: "",
     sortBy: 0,
   });
-
+  debugger;
   let tableHeader = [];
   let tableFilter = [];
   let tableContent = [];
@@ -134,7 +135,11 @@ function Grid(props) {
     });
   }
 
-  useEffect(() => readGridDate(1, "", 0), []);
+  useEffect(() => {
+    if (!data) {
+      readGridDate(1, "", 0);
+    }
+  }, []);
   return (
     <>
       <div

@@ -1,13 +1,14 @@
 import storage from '../../shared/localStorage';
 
 var favorite = {
-    addtoFavorite: function(countryId) {
+    addtoFavorite: function(countryId, countryName) {
         let result = storage.getFromStorage('userFavorite');
         if (!result) {
             result = [];
         }
-        if (result.indexOf(countryId) < 0) {
-            result.push(countryId);
+        const index = result.findIndex((it) => it.id == countryId);
+        if (index == -1) {
+            result.push({ id: countryId, name: countryName });
             storage.setInStorage('userFavorite', result);
         }
     },
@@ -15,7 +16,7 @@ var favorite = {
     removefromFavorite: function(countryId) {
         let result = storage.getFromStorage('userFavorite');
         if (result) {
-            const index = result.indexOf(countryId);
+            const index = result.findIndex((it) => it.id == countryId);
             if (index > -1) {
                 result.splice(index, 1);
                 storage.setInStorage('userFavorite', result);
@@ -26,12 +27,17 @@ var favorite = {
     isInFavorite: function(countryId) {
         let result = storage.getFromStorage('userFavorite');
         if (result) {
-            const index = result.indexOf(countryId);
+            const index = result.findIndex((it) => it.id == countryId);
             if (index > -1) {
                 return true;
             }
         }
         return false;
+    },
+
+    getFavoriteList: function() {
+        let result = storage.getFromStorage('userFavorite');
+        return result;
     }
 }
 

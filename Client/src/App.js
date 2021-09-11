@@ -4,6 +4,7 @@ import "./App.css";
 
 import Home from "./pages/home";
 import Details from "./pages/details";
+import Favorite from "./pages/favorite";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 
@@ -14,7 +15,7 @@ function App() {
     <>
       <NavBar />
       <Container className="overflow-hidden" style={{height: 'calc(100vh - 9em)'}}>
-        <Details countryId="ec4f93f1-11fc-11ec-a969-d0c5d32e1e3a" />
+        <Favorite countryId="ec4f93f1-11fc-11ec-a969-d0c5d32e1e3a" />
       </Container>
 
       <Footer />
