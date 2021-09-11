@@ -36,8 +36,9 @@ module.exports = logic = {
 
         if (result.count) {
             let dbResult = await db.getCountryDetails(countryId, pageNumber);
-            result.data = dbResult.map((it) => {
+            result.data = dbResult.map((it, idx) => {
                 return {
+                    id: idx,
                     date: stringToDate(it.Date),
                     confirmedCases: it.Confirmed,
                     recoveredCases: it.Recovered,

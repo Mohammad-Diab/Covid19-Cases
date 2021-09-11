@@ -49,7 +49,7 @@ function Favorite(props) {
         <Button
           size="sm"
           className="px-4"
-          style={{ lineHeight: "12px", }}
+          style={{ lineHeight: "12px" }}
           variant="danger"
           title="Remove from favorite"
           onClick={() => {
@@ -71,7 +71,12 @@ function Favorite(props) {
   return (
     <>
       <h3 className="mb-4">User favorite</h3>
-      <Grid dataUrl={null} data={data} columns={columnsArr} tableClasse="text-center"></Grid>
+      <Grid
+        dataUrl={null}
+        data={data}
+        columns={columnsArr}
+        tableClasse="text-center"
+      ></Grid>
     </>
   );
 }

@@ -101,6 +101,7 @@ function CountryInfo(props) {
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {cardContent.map((card) => (
             <div
+              key={card.text}
               style={{
                 display: "flex",
                 alignItems: "center",
