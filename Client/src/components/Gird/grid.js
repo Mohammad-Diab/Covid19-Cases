@@ -34,7 +34,7 @@ function Grid(props) {
     for (let col of columnsArr) {
       tableHeader.push(
         col.Sortable ? (
-          <th style={{ width: col.width }} key={col.id}>
+          <th style={{ verticalAlign: "middle", width: col.width }} key={col.id}>
             <Button
               variant="link"
               className="py-0 text-dark"
