@@ -35,7 +35,9 @@ function App() {
             navigatePage={(pageId, countryId) => navigate(pageId, countryId)}
           />
         ) : currentPage.page === "favorite" ? (
-          <Favorite />
+          <Favorite
+            navigatePage={(pageId, countryId) => navigate(pageId, countryId)}
+          />
         ) : (
           <Details countryId={currentPage.param} />
         )}

@@ -7,6 +7,7 @@ import favorite from "../../shared/favorite";
 import trash from "../../Assets/img/trash.svg";
 
 function Favorite(props) {
+  const navigatePage = props.navigatePage;
   let columnsArr = [
     {
       id: -1,
@@ -37,7 +38,6 @@ function Favorite(props) {
   let userFavorite = favorite.getFavoriteList();
   const [favoriteList, setFavoriteList] = useState(userFavorite);
   function refreshList() {
-    debugger;
     setFavoriteList(favorite.getFavoriteList());
   }
 
@@ -76,6 +76,7 @@ function Favorite(props) {
         data={data}
         columns={columnsArr}
         tableClasse="text-center"
+        navigatePage={navigatePage}
       ></Grid>
     </>
   );

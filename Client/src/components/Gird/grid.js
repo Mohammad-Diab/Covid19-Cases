@@ -105,7 +105,7 @@ function Grid(props) {
       }
     }
   }
-  
+
   if (gridState.isLoading) {
     tableContent.push(
       <tr key={"loading"}>
@@ -169,7 +169,7 @@ function Grid(props) {
         className="mb-2"
         style={{ height: gridHeight, overflow: "hidden auto" }}
       >
-        <Table striped bordered hover className={`mb-2 ${tableClasse}`}>
+        <Table striped bordered hover className={`mb-0 ${tableClasse}`}>
           <thead>
             <tr className="text-center bg-light">{tableHeader}</tr>
             {filterCount ? (
