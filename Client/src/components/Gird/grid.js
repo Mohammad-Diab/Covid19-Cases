@@ -17,6 +17,7 @@ function Grid(props) {
   let data = props.data;
   let tableClasse = props.tableClasse || "";
   let gridHeight = props.gridHeight || "calc(100% - 3em)";
+  const navigatePage = props.navigatePage || null;
 
   const [gridState, setGridState] = useState({
     data: data ? data.data : null,
@@ -27,7 +28,7 @@ function Grid(props) {
     filter: "",
     sortBy: 0,
   });
-  debugger;
+
   let tableHeader = [];
   let tableFilter = [];
   let tableContent = [];
@@ -45,18 +46,17 @@ function Grid(props) {
               variant="link"
               className="py-0 text-dark"
               onClick={() => {
-                debugger;
                 readGridDate(
                   1,
                   gridState.filter,
-                  gridState.sortBy == col.id ? col.id + 10 : col.id
+                  gridState.sortBy === col.id ? col.id + 10 : col.id
                 );
               }}
             >
               {col.text}
-              {gridState.sortBy == col.id ? (
+              {gridState.sortBy === col.id ? (
                 <img alt="arrow up" src={arrowUp} className="ml-2" />
-              ) : gridState.sortBy == col.id + 10 ? (
+              ) : gridState.sortBy === col.id + 10 ? (
                 <img alt="arrow down" src={arrowDown} className="ml-2" />
               ) : (
                 ""
@@ -99,18 +99,26 @@ function Grid(props) {
     );
   } else if (gridState.data) {
     let startIndex = (gridState.currentPage - 1) * config.rowPerPage + 1;
-    tableContent = gridState.data.map((row, index) => (
-      <tr key={row.id}>
-        {columnsArr.map((it) => {
-          let className = it.id == -1 ? "text-center" : "";
-          return (
-            <td className={className} key={row.id + it.id}>
-              {it.id == -1 ? index + startIndex : row[it.selector]}
-            </td>
-          );
-        })}
-      </tr>
-    ));
+    tableContent = gridState.data.map((row, index) => {
+      let onClick = navigatePage
+        ? () => {
+            navigatePage("details", row.id);
+          }
+        : undefined;
+      let cursorType = navigatePage ? "pointer" : "default";
+      return (
+        <tr key={row.id} onClick={onClick} style={{ cursor: cursorType }}>
+          {columnsArr.map((it) => {
+            let className = it.id === -1 ? "text-center" : "";
+            return (
+              <td className={className} key={row.id + it.id}>
+                {it.id === -1 ? index + startIndex : row[it.selector]}
+              </td>
+            );
+          })}
+        </tr>
+      );
+    });
   }
 
   //selector: 'region',

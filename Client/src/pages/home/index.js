@@ -18,7 +18,7 @@ function Home(props) {
       text: "Country",
       Sortable: true,
       filterable: false,
-      width: "25%"
+      width: "25%",
     },
     {
       id: countryColumns_enum.region,
@@ -38,7 +38,7 @@ function Home(props) {
       text: "Confirmed cases",
       Sortable: true,
       filterable: false,
-      width: "15%"
+      width: "15%",
     },
     {
       id: countryColumns_enum.recoveredCases,
@@ -46,7 +46,7 @@ function Home(props) {
       text: "Recovered cases",
       Sortable: true,
       filterable: false,
-      width: "15%"
+      width: "15%",
     },
     {
       id: countryColumns_enum.deathCases,
@@ -54,10 +54,16 @@ function Home(props) {
       text: "Death cases",
       Sortable: true,
       filterable: false,
-      width: "15%"
+      width: "15%",
     },
   ];
-  return <Grid dataUrl="getCountriesList" columns={columnsArr}></Grid>;
+  return (
+    <Grid
+      dataUrl="getCountriesList"
+      columns={columnsArr}
+      navigatePage={props.navigatePage}
+    ></Grid>
+  );
 }
 
 export default Home;
