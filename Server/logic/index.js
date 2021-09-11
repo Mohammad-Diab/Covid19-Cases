@@ -20,6 +20,8 @@ module.exports = logic = {
                     deathCases: it.Death,
                 };
             });
+        } else {
+            result.data = [];
         }
         return result
     },

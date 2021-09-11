@@ -11,7 +11,6 @@ function GridPagination(props) {
   if (numberOfPages < 2) {
     return <></>;
   }
-  debugger;
 
   let pageNumbersToShow = [
     1,

@@ -1,6 +1,6 @@
 import Grid from "../../components/Gird/grid";
 
-import countryColumns_enum, { filterField_enum } from "./../../Shared/enum";
+import countryColumns_enum, { filterField_enum } from "./../../shared/enum";
 
 function Home(props) {
   let columnsArr = [
@@ -10,6 +10,7 @@ function Home(props) {
       text: "#",
       Sortable: false,
       filterable: false,
+      width: "5%",
     },
     {
       id: countryColumns_enum.country,
@@ -17,6 +18,7 @@ function Home(props) {
       text: "Country",
       Sortable: true,
       filterable: false,
+      width: "25%"
     },
     {
       id: countryColumns_enum.region,
@@ -24,6 +26,7 @@ function Home(props) {
       text: "Region",
       Sortable: true,
       filterable: true,
+      width: "25%",
       filter: {
         type: filterField_enum.dropdown,
         dateUrl: "getAllRegions",
@@ -35,6 +38,7 @@ function Home(props) {
       text: "Confirmed cases",
       Sortable: true,
       filterable: false,
+      width: "15%"
     },
     {
       id: countryColumns_enum.recoveredCases,
@@ -42,6 +46,7 @@ function Home(props) {
       text: "Recovered cases",
       Sortable: true,
       filterable: false,
+      width: "15%"
     },
     {
       id: countryColumns_enum.deathCases,
@@ -49,14 +54,10 @@ function Home(props) {
       text: "Death cases",
       Sortable: true,
       filterable: false,
+      width: "15%"
     },
   ];
-  return (
-    <Grid
-      dataUrl="getCountriesList"
-      columns={columnsArr}
-    ></Grid>
-  );
+  return <Grid dataUrl="getCountriesList" columns={columnsArr}></Grid>;
 }
 
 export default Home;

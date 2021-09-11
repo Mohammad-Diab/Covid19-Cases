@@ -61,6 +61,7 @@ module.exports = data = {
     getAllRegions: async function() {
         let query = 'SELECT DISTINCT Region from countries ORDER by Region';
         let result = await excuteQuery(query);
+        result = result.map((it) => it.Region);
         return result;
     },
 
