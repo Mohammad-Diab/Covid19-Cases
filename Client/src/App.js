@@ -22,7 +22,10 @@ function App() {
 
   return (
     <>
-      <NavBar navigatePage={(pageId) => navigate(pageId)} />
+      <NavBar
+        currentPage={currentPage.page}
+        navigatePage={(pageId) => navigate(pageId)}
+      />
       <Container
         className="overflow-hidden"
         style={{ height: "calc(100vh - 9em)" }}
