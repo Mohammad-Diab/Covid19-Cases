@@ -14,6 +14,8 @@ import arrowDown from "./../../Assets/img/arrow-down.svg";
 function Grid(props) {
   let columnsArr = props.columns;
   let dataUrl = props.dataUrl;
+  let tableClasse = props.tableClasse || "";
+  let gridHeight = props.gridHeight || "calc(100% - 3em)";
 
   const [gridState, setGridState] = useState({
     data: null,
@@ -34,7 +36,10 @@ function Grid(props) {
     for (let col of columnsArr) {
       tableHeader.push(
         col.Sortable ? (
-          <th style={{ verticalAlign: "middle", width: col.width }} key={col.id}>
+          <th
+            style={{ verticalAlign: "middle", width: col.width }}
+            key={col.id}
+          >
             <Button
               variant="link"
               className="py-0 text-dark"
@@ -70,7 +75,6 @@ function Grid(props) {
         filterCount++;
 
         let filterElement = buildColumnFilter(col, (filter) => {
-          debugger;
           filter = filter ? encodeURIComponent(filter) : "";
           readGridDate(1, filter, gridState.sortBy);
         });
@@ -112,7 +116,11 @@ function Grid(props) {
 
   function readGridDate(pageNumber, filter, sortBy) {
     filter = filter ? filter : "";
-    let api = `${dataUrl}?pageNumber=${pageNumber}&filter=${filter}&sortBy=${sortBy}`;
+    let apiSaparator = "?";
+    if (dataUrl.indexOf("?") > -1) {
+      apiSaparator = "&";
+    }
+    let api = `${dataUrl}${apiSaparator}pageNumber=${pageNumber}&filter=${filter}&sortBy=${sortBy}`;
     request.get(api).then((result) => {
       setGridState({
         isLoading: false,
@@ -131,16 +139,18 @@ function Grid(props) {
     <>
       <div
         className="mb-2"
-        style={{ height: "calc(100% - 3em)", overflow: "hidden auto" }}
+        style={{ height: gridHeight, overflow: "hidden auto" }}
       >
-        <Table striped bordered hover className="mb-0">
+        <Table striped bordered hover className={`mb-2 ${tableClasse}`}>
           <thead>
             <tr className="text-center bg-light">{tableHeader}</tr>
-            {filterCount ? <tr className="text-center bg-light">{tableFilter}</tr> : <></>}
+            {filterCount ? (
+              <tr className="text-center bg-light">{tableFilter}</tr>
+            ) : (
+              <></>
+            )}
           </thead>
-          <tbody>
-            {tableContent}
-          </tbody>
+          <tbody>{tableContent}</tbody>
         </Table>
       </div>
       <GridPagination

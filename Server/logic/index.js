@@ -28,7 +28,27 @@ module.exports = logic = {
 
     getCountryDetails: async function(countryId, pageNumber) {
         pageNumber = pageNumber < 0 ? 1 : pageNumber;
-        return await db.getCountryDetails(countryId, pageNumber);
+        let result = {};
+        let resultCount = await db.getCountryDetailsCount(countryId);
+
+        result.count = resultCount;
+        result.numberOfPages = Math.ceil(resultCount / config.rowPerPage);
+
+        if (result.count) {
+            let dbResult = await db.getCountryDetails(countryId, pageNumber);
+            result.data = dbResult.map((it) => {
+                return {
+                    date: stringToDate(it.Date),
+                    confirmedCases: it.Confirmed,
+                    recoveredCases: it.Recovered,
+                    deathCases: it.Death,
+                };
+            });
+        } else {
+            result.data = [];
+        }
+        return result;
+
     },
 
     getCountryCasesCount: async function(countryId) {
@@ -39,3 +59,7 @@ module.exports = logic = {
         return await db.getAllRegions();
     },
 };
+
+function stringToDate(str) {
+    return `${str.substr(6,2)}/${str.substr(4,2)}/${str.substr(0,4)}`;
+}
