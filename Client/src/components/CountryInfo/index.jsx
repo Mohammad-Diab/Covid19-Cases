@@ -1,8 +1,13 @@
 import request from "./../../shared/request";
 import { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+
+import favorite from "../../pages/favorite/favorite";
+
 import confirmed from "../../Assets/img/confirmed.svg";
 import death from "../../Assets/img/death.svg";
 import recovered from "../../Assets/img/recovered.svg";
+
 function CountryInfo(props) {
   let countryId = props.countryId;
   const [countryDetails, setCountryDetails] = useState({
@@ -31,6 +36,9 @@ function CountryInfo(props) {
 
   useEffect(getCountryInfo, []);
 
+  let isCountryInFavorite = favorite.isInFavorite(countryId);
+  const [isInFav, setIsInFav] = useState(isCountryInFavorite);
+
   if (countryDetails.isLoading) {
     return <h5>Loading...</h5>;
   }
@@ -40,21 +48,39 @@ function CountryInfo(props) {
       text: "Confirmed cases",
       value: countryDetails.confirmedCases,
       image: confirmed,
-      variant: 'warning'
+      variant: "warning",
     },
     {
       text: "Recovered cases",
       value: countryDetails.recoveredCases,
       image: recovered,
-      variant: 'success'
+      variant: "success",
     },
     {
       text: "Death cases",
       value: countryDetails.deathCases,
       image: death,
-      variant: 'danger'
+      variant: "danger",
     },
   ];
+
+  const favButton = (
+    <Button
+      size="sm"
+      style={{marginLeft: ".5rem"}}
+      variant={isInFav ? "danger" : "success"}
+      onClick={() => {
+        if (isInFav) {
+            favorite.removefromFavorite(countryId);
+        } else {
+            favorite.addtoFavorite(countryId);
+        }
+        setIsInFav(!isInFav);
+      }}
+    >
+      {isInFav ? "Remove from favorite" : "Add to favorite"}
+    </Button>
+  );
 
   return (
     <>
@@ -67,7 +93,9 @@ function CountryInfo(props) {
         }}
       >
         <div>
-          <h4>{countryDetails.name}</h4>
+          <h4>
+            {countryDetails.name} {favButton}
+          </h4>
           <h5 className="text-muted mb-0">{countryDetails.region}</h5>
         </div>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -88,28 +116,14 @@ function CountryInfo(props) {
               />
               <div>
                 <div className="mb-1">{card.text}</div>
-                <h5 className={`text-center mb-0 text-${card.variant}`}>{card.value}</h5>
+                <h5 className={`text-center mb-0 text-${card.variant}`}>
+                  {card.value}
+                </h5>
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      {/* <CardGroup className="mt-2 mb-4">
-        {cardContent.map((card) => (
-          <Card key={card.text} style={{ width: "18rem" }}>
-            <Card.Img
-              variant="top"
-              alt={`${card.text} Image`}
-              src={card.image}
-            />
-            <Card.Body>
-              <Card.Text>{card.text}</Card.Text>
-              <Card.Title className="text-center">{card.value}</Card.Title>
-            </Card.Body>
-          </Card>
-        ))}
-      </CardGroup> */}
     </>
   );
 }
