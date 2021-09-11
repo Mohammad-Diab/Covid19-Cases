@@ -11,7 +11,7 @@ function DropDownFilter(props) {
     data: null,
   });
 
-  function readFilterDate() {
+  useEffect(() => {
     request.get(dateUrl).then((result) => {
       debugger;
       setFilterState({
@@ -19,9 +19,7 @@ function DropDownFilter(props) {
         data: result,
       });
     });
-  }
-
-  useEffect(() => readFilterDate(), []);
+  }, []);
 
   if (filterState.data == null) {
     return (

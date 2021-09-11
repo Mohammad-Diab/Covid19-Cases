@@ -2,7 +2,7 @@ import { useState } from "react";
 import Grid from "../../components/Gird/grid";
 import { Button } from "react-bootstrap";
 
-import favorite from "./favorite";
+import favorite from "../../shared/favorite";
 
 import trash from "../../Assets/img/trash.svg";
 
@@ -37,6 +37,7 @@ function Favorite(props) {
   let userFavorite = favorite.getFavoriteList();
   const [favoriteList, setFavoriteList] = useState(userFavorite);
   function refreshList() {
+    debugger;
     setFavoriteList(favorite.getFavoriteList());
   }
 
@@ -69,7 +70,7 @@ function Favorite(props) {
   };
   return (
     <>
-      <h3>User favorite</h3>
+      <h3 className="mb-4">User favorite</h3>
       <Grid dataUrl={null} data={data} columns={columnsArr} tableClasse="text-center"></Grid>
     </>
   );

@@ -1,4 +1,4 @@
-import storage from '../../shared/localStorage';
+import storage from './localStorage';
 
 var favorite = {
     addtoFavorite: function(countryId, countryName) {
@@ -6,8 +6,8 @@ var favorite = {
         if (!result) {
             result = [];
         }
-        const index = result.findIndex((it) => it.id == countryId);
-        if (index == -1) {
+        const index = result.findIndex((it) => it.id === countryId);
+        if (index === -1) {
             result.push({ id: countryId, name: countryName });
             storage.setInStorage('userFavorite', result);
         }
@@ -16,7 +16,7 @@ var favorite = {
     removefromFavorite: function(countryId) {
         let result = storage.getFromStorage('userFavorite');
         if (result) {
-            const index = result.findIndex((it) => it.id == countryId);
+            const index = result.findIndex((it) => it.id === countryId);
             if (index > -1) {
                 result.splice(index, 1);
                 storage.setInStorage('userFavorite', result);
@@ -27,7 +27,7 @@ var favorite = {
     isInFavorite: function(countryId) {
         let result = storage.getFromStorage('userFavorite');
         if (result) {
-            const index = result.findIndex((it) => it.id == countryId);
+            const index = result.findIndex((it) => it.id === countryId);
             if (index > -1) {
                 return true;
             }

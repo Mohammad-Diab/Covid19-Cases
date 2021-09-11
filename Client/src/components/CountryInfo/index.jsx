@@ -2,7 +2,7 @@ import request from "./../../shared/request";
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 
-import favorite from "../../pages/favorite/favorite";
+import favorite from "../../shared/favorite";
 
 import confirmed from "../../Assets/img/confirmed.svg";
 import death from "../../Assets/img/death.svg";
@@ -34,7 +34,7 @@ function CountryInfo(props) {
       });
   }
 
-  useEffect(getCountryInfo, []);
+  useEffect(() => getCountryInfo(), []);
 
   let isCountryInFavorite = favorite.isInFavorite(countryId);
   const [isInFav, setIsInFav] = useState(isCountryInFavorite);
@@ -110,7 +110,7 @@ function CountryInfo(props) {
               <img
                 width="64"
                 height="64"
-                alt={`${card.text} Image`}
+                alt={`${card.text}`}
                 src={card.image}
                 style={{ marginRight: "0.4rem" }}
               />

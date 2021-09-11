@@ -1,10 +1,9 @@
 import { Pagination } from "react-bootstrap";
-import { useState } from "react";
 
 function GridPagination(props) {
   let currentPage = props.currentPage;
   let numberOfPages = props.numberOfPages;
-  let recordsCount = props.recordsCount;
+  //let recordsCount = props.recordsCount;
 
   let goToPage =props.goToPage ;
 
@@ -21,7 +20,7 @@ function GridPagination(props) {
   ];
 
   pageNumbersToShow = pageNumbersToShow.filter(function (item, pos) {
-    return pageNumbersToShow.indexOf(item) == pos && item > 0 && item <= numberOfPages;
+    return pageNumbersToShow.indexOf(item) === pos && item > 0 && item <= numberOfPages;
   });
 
   let pagesItem = [];
@@ -31,7 +30,7 @@ function GridPagination(props) {
       pagesItem.push(<Pagination.Ellipsis disabled key={`Ellipsis${lastPage}-${page}`} />);
     }
     pagesItem.push(
-      <Pagination.Item key={`page${page}`} active={currentPage == page} onClick={()=>goToPage(page)}>
+      <Pagination.Item key={`page${page}`} active={currentPage === page} onClick={()=>goToPage(page)}>
         {page}
       </Pagination.Item>
     );

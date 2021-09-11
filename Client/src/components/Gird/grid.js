@@ -93,7 +93,7 @@ function Grid(props) {
 
   if (gridState.isLoading) {
     tableContent.push(
-      <tr>
+      <tr key={"loading"}>
         <td colSpan={columnsArr.length}>Loading...</td>
       </tr>
     );
