@@ -37,7 +37,7 @@ var favorite = {
 
     getFavoriteList: function() {
         let result = storage.getFromStorage('userFavorite');
-        return result;
+        return result || [];
     }
 }
 
