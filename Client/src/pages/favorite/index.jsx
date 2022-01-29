@@ -52,7 +52,8 @@ function Favorite(props) {
           style={{ lineHeight: "12px" }}
           variant="danger"
           title="Remove from favorite"
-          onClick={() => {
+          onClick={evt => {
+            evt.stopPropagation();
             favorite.removefromFavorite(it.id);
             refreshList();
           }}
